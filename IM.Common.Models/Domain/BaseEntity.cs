@@ -1,11 +1,11 @@
 ﻿namespace IM.Common.Models.Domain;
 
-public class BaseEntity<TId> : BaseEntity, IEntity<TId>
+public class BaseEntity<TId> : BaseEntity, IBaseEntity<TId>
 {
     public TId Id { get; set; }
 }
 
-public class BaseEntity : IEntity
+public class BaseEntity : IBaseEntity
 {
     public DateTime Created { get; set; }
     public DateTime? Updated { get; set; }
