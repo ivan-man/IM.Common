@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IM.Common.EF.Repositories.Implementations;
 
 public class BaseRepositoryAdvanced<T, TId> : BaseRepositoryAdvanced<T>, IBaseRepositoryAdvanced<T, TId>
-    where T : BaseEntity<TId>, new()
+    where T : class, IBaseEntity<TId>, new()
 {
     protected BaseRepositoryAdvanced(DbContext context) : base(context)
     {
@@ -21,7 +21,7 @@ public class BaseRepositoryAdvanced<T, TId> : BaseRepositoryAdvanced<T>, IBaseRe
         => GetItemAsync(q => q.Id!.Equals(id), cancellationToken, include);
 }
 
-public class BaseRepositoryAdvanced<T> : BaseRepository<T>, IBaseRepositoryAdvanced<T> where T : BaseEntity, new()
+public class BaseRepositoryAdvanced<T> : BaseRepository<T>, IBaseRepositoryAdvanced<T> where T : class, IBaseEntity, new()
 {
     protected BaseRepositoryAdvanced(DbContext context) : base(context)
     {

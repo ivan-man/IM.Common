@@ -4,7 +4,7 @@ using IM.Common.Models.Domain;
 
 namespace IM.Common.EF.Repositories;
 
-public interface IBaseRepositoryAdvanced<T, TId> : IBaseRepositoryAdvanced<T> where T : BaseEntity<TId>
+public interface IBaseRepositoryAdvanced<T, TId> : IBaseRepositoryAdvanced<T> where T : IBaseEntity<TId>
 {
     Task<T?> GetByIdAsync(
         TId id,
@@ -12,7 +12,7 @@ public interface IBaseRepositoryAdvanced<T, TId> : IBaseRepositoryAdvanced<T> wh
         params Expression<Func<T, object>>[]? include);
 }
 
-public interface IBaseRepositoryAdvanced<T> : IBaseRepository<T> where T : IEntity
+public interface IBaseRepositoryAdvanced<T> : IBaseRepository<T> where T : IBaseEntity
 {
 }
 

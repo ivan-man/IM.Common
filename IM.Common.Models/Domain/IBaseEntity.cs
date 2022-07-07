@@ -2,12 +2,12 @@
 
 namespace IM.Common.Models.Domain;
 
-public interface IEntity<TId> : IEntity
+public interface IBaseEntity<TId> : IBaseEntity
 {
     [Key] TId Id { get; set; }
 }
 
-public interface IEntity
+public interface IBaseEntity
 {
     DateTime Created { get; set; }
 
