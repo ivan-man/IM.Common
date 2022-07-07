@@ -7,7 +7,8 @@
         <PackageVersion>0.0.5</PackageVersion>
         <Authors>ivan-man</Authors>
         <PackageProjectUrl>https://github.com/ivan-man/IM.Common</PackageProjectUrl>
-        <RepositoryType>https://github.com/ivan-man/IM.Common</RepositoryType>
+        <RepositoryType></RepositoryType>
+        <RepositoryUrl>https://github.com/ivan-man/IM.Common</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
