@@ -6,7 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>IM.Common.MediatR</AssemblyName>
-        <PackageVersion>0.0.2</PackageVersion>
+        <PackageVersion>0.0.3</PackageVersion>
         <Authors>ivan-man</Authors>
         <PackageProjectUrl>https://github.com/ivan-man/IM.Common</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ivan-man/IM.Common</RepositoryUrl>

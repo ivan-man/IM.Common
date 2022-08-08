@@ -1,4 +1,5 @@
-﻿using IM.Common.MediatR.Behaviours;
+﻿using FluentValidation;
+using IM.Common.MediatR.Behaviours;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddImMediatr(this IServiceCollection services, Type lookupType)
     {
-        services.AddMediatR(lookupType ?? throw new ArgumentNullException(nameof(lookupType)));
+        services.AddMediatR(lookupType ?? throw new ArgumentNullException(nameof(lookupType)))     
+            .AddValidatorsFromAssembly(lookupType.Assembly);
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehaviour<,>));
 
