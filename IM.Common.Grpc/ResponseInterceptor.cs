@@ -5,9 +5,9 @@ using Mapster;
 
 namespace IM.Common.Grpc;
 
-internal class ResponseInterceptor : Interceptor
+public class ResponseInterceptor : Interceptor
 {
-    internal ResponseInterceptor()
+    public ResponseInterceptor()
     {
     }
 
