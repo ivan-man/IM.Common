@@ -154,4 +154,7 @@ public class Result<T> : IResult<T>
     {
         return new Result<T> { Message = message, StatusCode = code, Success = success, Data = data };
     }
+
+    public bool IsEmpty()
+        => Data == null;
 }
