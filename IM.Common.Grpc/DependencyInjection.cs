@@ -8,7 +8,7 @@ namespace IM.Common.Grpc;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddGRpcService<T>(
+    public static IServiceCollection AddGrpcService<T>(
         this IServiceCollection services,
         IConfiguration configuration,
         string sectionName,
