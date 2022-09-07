@@ -4,14 +4,18 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PackageVersion>0.0.8</PackageVersion>
+        <PackageVersion>0.0.1</PackageVersion>
         <Authors>ivan-man</Authors>
         <PackageProjectUrl>https://github.com/ivan-man/IM.Common</PackageProjectUrl>
         <RepositoryUrl>https://github.com/ivan-man/IM.Common</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Domain" />
+      <ProjectReference Include="..\IM.Common.Models\IM.Common.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     </ItemGroup>
 
 </Project>

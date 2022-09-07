@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 namespace IM.Common.Models;
 
 [DataContract]
-public class ResultList<T> : IResult<T>
+public class ResultList<T> : IResult<IEnumerable<T>>
 {
     [DataMember(Order = 3)] public IEnumerable<T> Data { get; set; }
     [DataMember(Order = 1)] public bool Success { get; set; }

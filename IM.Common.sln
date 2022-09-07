@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IM.Common.MediatR", "IM.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IM.Common.Redis.DistributedCache", "IM.Common.Redis.DistributedCache\IM.Common.Redis.DistributedCache.csproj", "{0664655A-F745-430C-A084-859E72A94F75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IM.Common.Models.Mvc.Core.Response", "IM.Common.Models.Mvc.Core.Response\IM.Common.Models.Mvc.Core.Response.csproj", "{86CFC452-37C7-40D2-97D3-7505EE6E0F96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,9 @@ Global
 		{0664655A-F745-430C-A084-859E72A94F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0664655A-F745-430C-A084-859E72A94F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0664655A-F745-430C-A084-859E72A94F75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86CFC452-37C7-40D2-97D3-7505EE6E0F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86CFC452-37C7-40D2-97D3-7505EE6E0F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86CFC452-37C7-40D2-97D3-7505EE6E0F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86CFC452-37C7-40D2-97D3-7505EE6E0F96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -9,4 +9,5 @@ public interface IResult
 
 public interface IResult<T> : IResult
 {
+    T Data { get; set; }
 }

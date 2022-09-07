@@ -3,7 +3,7 @@
 namespace IM.Common.Models;
 
 [DataContract]
-public class PagedResult<T> : IResult<T>
+public class PagedResult<T> : IResult<IEnumerable<T>>
 {
     [DataMember(Order = 3)] public int Count { get; set; }
     [DataMember(Order = 4)] public int Page { get; set; }
