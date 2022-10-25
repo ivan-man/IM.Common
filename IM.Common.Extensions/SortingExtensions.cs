@@ -1,86 +1,102 @@
 ﻿using System.Reflection;
+using EFCore.NamingConventions.Internal;
+using IM.Common.Extensions.Helpers;
+using IM.Common.Models.PagedRequest;
 
 namespace IM.Common.Extensions;
 
 public static class SortingExtensions
 {
-    public static string GetSorting<T>(this string sortBy) where T : new()
-    {
-        var sortItems = sortBy.GetSortItems();
+    private static readonly BindingFlags BindingFlags =
+        BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance;
 
-        if (sortItems is null)
+    public static NamingConvention NamingConvention { get; private set; } = NamingConvention.None;
+
+    public static void SetSnakeNamingConvention()
+    {
+        NamingConvention = NamingConvention.SnakeCase;
+    }
+    
+    public static void SetCamelCaseNamingConvention()
+    {
+        NamingConvention = NamingConvention.CamelCase;
+    }
+
+    public static string GetSorting<T>(this IEnumerable<SortDescriptor> descriptors,
+        NamingConvention convention = NamingConvention.None)
+    {
+        convention = convention is NamingConvention.None ? NamingConvention : convention;
+
+        var sortDescriptors = descriptors as SortDescriptor[] ?? descriptors.ToArray();
+
+        if (sortDescriptors?.Any() != true)
             return string.Empty;
 
         var orderString = string.Empty;
-        foreach (var sortItem in sortItems)
+
+        var properties = typeof(T).GetProperties(BindingFlags);
+
+        foreach (var sortItem in sortDescriptors)
         {
-            var emptyInstance = new T();
+            var sortItemPropertyName = sortItem.Field.ToLowerInvariant();
+            var targetProperty = properties.FirstOrDefault(q => q.Name.ToLowerInvariant().Equals(sortItemPropertyName));
 
-            foreach (var propertyInfo in emptyInstance.GetType().GetProperties())
-            {
-                try
-                {
-                    propertyInfo.SetValue(emptyInstance, Activator.CreateInstance(propertyInfo.PropertyType));
-                }
-                catch
-                {
-                    //ignore
-                }
-            }
+            if (targetProperty == null)
+                continue;
 
-            GetValue(emptyInstance, sortItem.PropertyName.ToLower(), out var name);
-            if (string.IsNullOrEmpty(name)) return string.Empty;
-
-            if (sortItem.IsDescending)
+            if (sortItem.Order == EnumSortDirection.Desc)
             {
                 orderString = string.IsNullOrEmpty(orderString)
-                    ? orderString + name + " DESC"
-                    : orderString + ", " + name + " DESC";
+                    ? orderString + targetProperty.GetConventionName(convention) + " DESC"
+                    : orderString + ", " + targetProperty.GetConventionName(convention) + " DESC";
             }
             else
             {
                 orderString = string.IsNullOrEmpty(orderString)
-                    ? orderString + name + " ASC"
-                    : orderString + ", " + name + " ASC";
+                    ? orderString + targetProperty.GetConventionName(convention) + " ASC"
+                    : orderString + ", " + targetProperty.GetConventionName(convention) + " ASC";
             }
         }
 
         return orderString;
     }
 
-    private static void GetValue(object currentObject, string propName, out string? value)
+    public static string GetSorting<T>(this string sortBy, NamingConvention convention = NamingConvention.CamelCase)
     {
-        // call helper function that keeps track of which objects we've seen before
-        GetValue(currentObject, propName, out value, new HashSet<object>());
-    }
+        convention = convention is NamingConvention.None ? NamingConvention : convention;
 
-    private static string GetValue(object currentObject, string propName, out string? value,
-        ISet<object> searchedObjects, string parentName = "")
-    {
-        var type = currentObject.GetType();
-        var propInfo = type.GetProperty(propName,
-            BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-        if (propInfo != null)
+        var sortItems = sortBy.GetSortItems();
+
+        if (sortItems is null)
+            return string.Empty;
+
+        var orderString = string.Empty;
+
+        var properties = typeof(T).GetProperties(BindingFlags);
+
+        foreach (var sortItem in sortItems)
         {
-            value = !string.IsNullOrEmpty(parentName) ? parentName + "." + propInfo.Name : propInfo.Name;
-            return !string.IsNullOrEmpty(parentName) ? parentName + "." + propInfo.Name : propInfo.Name;
+            var sortItemPropertyName = sortItem.PropertyName.ToLowerInvariant();
+            var targetProperty = properties.FirstOrDefault(q => q.Name.ToLowerInvariant().Equals(sortItemPropertyName));
+
+            if (targetProperty == null)
+                continue;
+
+            if (sortItem.IsDescending)
+            {
+                orderString = string.IsNullOrEmpty(orderString)
+                    ? orderString + targetProperty.Name.GetConventionName(convention) + " DESC"
+                    : orderString + ", " + targetProperty.Name.GetConventionName(convention) + " DESC";
+            }
+            else
+            {
+                orderString = string.IsNullOrEmpty(orderString)
+                    ? orderString + targetProperty.GetConventionName(convention) + " ASC"
+                    : orderString + ", " + targetProperty.GetConventionName(convention) + " ASC";
+            }
         }
 
-        // search child properties
-        foreach (var propInfo2 in currentObject.GetType()
-                     .GetProperties(BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance))
-        {
-            // ignore indexed properties
-            if (propInfo2.GetIndexParameters().Length != 0) continue;
-            var newObject = propInfo2.GetValue(currentObject, null);
-            if (newObject != null && searchedObjects.Add(newObject) &&
-                GetValue(newObject, propName, out value, searchedObjects, propInfo2.Name) != string.Empty)
-                return !string.IsNullOrEmpty(parentName) ? parentName + "." + propInfo2.Name : propInfo2.Name;
-        }
-
-        // property not found here
-        value = null;
-        return string.Empty;
+        return orderString;
     }
 
     private static List<SortingElement>? GetSortItems(this string sortBy)
